@@ -97,8 +97,10 @@ object SuggestTypeAlias {
   def equiv(alias: ScTypeAliasDefinition, tpe: ScType): Option[ScType] =
     check(alias, tpe)(_.equiv(tpe))
 
-  def conforms(alias: ScTypeAliasDefinition, tpe: ScType): Option[ScType] =
+  def conforms(alias: ScTypeAliasDefinition, tpe: ScType): Option[ScType] = {
+    val _ = org.jetbrains.plugins.scala.lang.psi.types.Context(alias)
     check(alias, tpe)(tpe.conforms(_))
+  }
 
   private def check(alias: ScTypeAliasDefinition, tpe: ScType)(checker: ScType => Boolean) = {
     val undefParams = alias.typeParameters.map(UndefinedType(_))
